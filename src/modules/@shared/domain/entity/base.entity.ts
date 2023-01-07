@@ -19,6 +19,10 @@ export default class BaseEntity {
     return this._createdAt;
   }
 
+  set createdAt(createdAt: Date){
+    this._createdAt = createdAt;
+  }
+
   get updatedAt(): Date {
     return this._updatedAt;
   }
