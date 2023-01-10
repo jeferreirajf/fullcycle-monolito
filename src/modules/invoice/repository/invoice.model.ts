@@ -1,6 +1,6 @@
 import { Column, HasMany, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
-import ClientModel from "./value-object/client.model";
-import InvoiceItemModel from "./value-object/invoice-item.model";
+import { InvoiceClientModel } from "./value-object/client.model";
+import { InvoiceItemModel } from "./value-object/invoice-item.model";
 
 @Table({
     tableName: "invoice",
@@ -12,8 +12,8 @@ export class InvoiceModel extends Model {
     @Column({ allowNull: false })
     declare id: string;
 
-    @HasOne(() => ClientModel)
-    declare client: ClientModel;
+    @HasOne(() => InvoiceClientModel)
+    declare client: InvoiceClientModel;
 
     @HasMany(() => InvoiceItemModel)
     declare items: InvoiceItemModel[];

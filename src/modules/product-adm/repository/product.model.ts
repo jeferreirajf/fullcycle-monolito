@@ -1,10 +1,10 @@
 import { Column, Model, PrimaryKey, Table } from "sequelize-typescript";
 
 @Table({
-  tableName: "products",
+  tableName: "adm_products",
   timestamps: false,
 })
-export class ProductModel extends Model {
+export class AdmProductModel extends Model {
   @PrimaryKey
   @Column({ allowNull: false })
   id: string;

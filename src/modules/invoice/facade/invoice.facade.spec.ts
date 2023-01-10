@@ -5,9 +5,9 @@ import Client from "../domain/value-objects/client.invoice.value-object";
 import InvoiceItem from "../domain/value-objects/item.invoice.value-object";
 import { InvoiceModel } from "../repository/invoice.model";
 import InvoiceRepository from "../repository/invoice.repository";
-import AddressModel from "../repository/value-object/address.model";
-import ClientModel from "../repository/value-object/client.model";
-import InvoiceItemModel from "../repository/value-object/invoice-item.model";
+import { InvoiceClientAddressModel } from "../repository/value-object/address.model";
+import { InvoiceClientModel } from "../repository/value-object/client.model";
+import { InvoiceItemModel } from "../repository/value-object/invoice-item.model";
 import FindInvoiceUseCase from "../usecase/find/find.invoice.usecase";
 import { FindInvoiceUseCaseInputDTO } from "../usecase/find/find.invoice.usecase.dto";
 import GenerateInvoiceUseCase from "../usecase/generate/generate.invoice.usecase";
@@ -26,7 +26,7 @@ describe("Facade invoice integration test", () => {
             sync: { force: true }
         });
 
-        sequelize.addModels([InvoiceItemModel, AddressModel, ClientModel, InvoiceModel]);
+        sequelize.addModels([InvoiceItemModel, InvoiceClientAddressModel, InvoiceClientModel, InvoiceModel]);
         await sequelize.sync();
     });
 
@@ -94,8 +94,8 @@ describe("Facade invoice integration test", () => {
             {
                 include: [
                     {
-                        model: ClientModel,
-                        include: [{ model: AddressModel }]
+                        model: InvoiceClientModel,
+                        include: [{ model: InvoiceClientAddressModel }]
                     },
                     {
                         model: InvoiceItemModel
@@ -164,7 +164,7 @@ describe("Facade invoice integration test", () => {
         const invoiceModel = await InvoiceModel.findAll({
             include: [
                 { model: InvoiceItemModel },
-                { model: ClientModel, include: ["address"] }
+                { model: InvoiceClientModel, include: ["address"] }
             ]
         });
 

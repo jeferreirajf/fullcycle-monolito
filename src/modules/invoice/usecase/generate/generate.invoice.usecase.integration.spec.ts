@@ -1,30 +1,30 @@
 import { Sequelize } from "sequelize-typescript"
 import { InvoiceModel } from "../../repository/invoice.model";
 import InvoiceRepository from "../../repository/invoice.repository";
-import AddressModel from "../../repository/value-object/address.model";
-import ClientModel from "../../repository/value-object/client.model";
-import InvoiceItemModel from "../../repository/value-object/invoice-item.model";
+import { InvoiceClientAddressModel } from "../../repository/value-object/address.model";
+import { InvoiceClientModel } from "../../repository/value-object/client.model";
+import { InvoiceItemModel } from "../../repository/value-object/invoice-item.model";
 import GenerateInvoiceUseCase from "./generate.invoice.usecase";
 import { GenerateInvoiceUseCaseInputDto } from "./generate.invoice.usecase.dto";
 
-describe("Generate invoice use case integration test", ()=>{
-    let sequelize : Sequelize;
-    beforeEach(async ()=>{
+describe("Generate invoice use case integration test", () => {
+    let sequelize: Sequelize;
+    beforeEach(async () => {
         sequelize = new Sequelize({
             dialect: "sqlite",
             logging: false,
             storage: ":memory:",
-            sync: {force: true}
+            sync: { force: true }
         });
-        sequelize.addModels([InvoiceItemModel, AddressModel, ClientModel, InvoiceModel]);
+        sequelize.addModels([InvoiceItemModel, InvoiceClientAddressModel, InvoiceClientModel, InvoiceModel]);
         await sequelize.sync();
     });
 
-    afterEach(async ()=>{
+    afterEach(async () => {
         await sequelize.close();
     });
 
-    it("should generate an invoice", async () =>{
+    it("should generate an invoice", async () => {
         const input: GenerateInvoiceUseCaseInputDto = {
             name: "Client 1",
             document: "Document 1",
@@ -51,10 +51,12 @@ describe("Generate invoice use case integration test", ()=>{
 
         const result = await generateInvoiceUseCase.execute(input);
 
-        const invoiceModel = await InvoiceModel.findAll({include: [
-            { model: InvoiceItemModel },
-            { model: ClientModel, include: ["address"]}
-        ]});
+        const invoiceModel = await InvoiceModel.findAll({
+            include: [
+                { model: InvoiceItemModel },
+                { model: InvoiceClientModel, include: ["address"] }
+            ]
+        });
 
         expect(invoiceModel.length).toBe(1);
         expect(invoiceModel[0].id).toBe(result.id);

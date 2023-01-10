@@ -4,9 +4,9 @@ import Client from "../domain/value-objects/client.invoice.value-object";
 import InvoiceItem from "../domain/value-objects/item.invoice.value-object";
 import InvoiceGateway from "../gateway/invoice.gateway.interface";
 import { InvoiceModel } from "./invoice.model";
-import AddressModel from "./value-object/address.model";
-import ClientModel from "./value-object/client.model";
-import InvoiceItemModel from "./value-object/invoice-item.model";
+import { InvoiceClientAddressModel } from "./value-object/address.model";
+import { InvoiceClientModel } from "./value-object/client.model";
+import { InvoiceItemModel } from "./value-object/invoice-item.model";
 
 
 export default class InvoiceRepository implements InvoiceGateway {
@@ -39,12 +39,12 @@ export default class InvoiceRepository implements InvoiceGateway {
                     }
                 }),
             },
-            {
-                include: [
-                    { model: ClientModel, include: [{ model: AddressModel }] },
-                    { model: InvoiceItemModel }
-                ]
-            });
+                {
+                    include: [
+                        { model: InvoiceClientModel, include: [{ model: InvoiceClientAddressModel }] },
+                        { model: InvoiceItemModel }
+                    ]
+                });
         }
         catch (error) {
             console.log(error);
@@ -57,7 +57,7 @@ export default class InvoiceRepository implements InvoiceGateway {
             where: { id },
             include: [
                 { model: InvoiceItemModel },
-                { model: ClientModel, include: ["address"] }
+                { model: InvoiceClientModel, include: ["address"] }
             ]
         });
 

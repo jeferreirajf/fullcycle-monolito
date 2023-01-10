@@ -1,12 +1,12 @@
 import { BelongsTo, Column, ForeignKey, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
 import { InvoiceModel } from "../invoice.model";
-import AddressModel from "./address.model";
+import {InvoiceClientAddressModel} from "./address.model";
 
 @Table({
-    tableName: "client",
+    tableName: "invoice_client",
     timestamps: false
 })
-export default class ClientModel extends Model {
+export class InvoiceClientModel extends Model {
     @PrimaryKey
     @Column
     declare id: string;
@@ -18,8 +18,8 @@ export default class ClientModel extends Model {
     @BelongsTo(()=>InvoiceModel)
     declare invoice: InvoiceModel;
 
-    @HasOne(() => AddressModel)
-    declare address: AddressModel;
+    @HasOne(() => InvoiceClientAddressModel)
+    declare address: InvoiceClientAddressModel;
 
     @Column({allowNull: false})
     name: string;

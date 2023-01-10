@@ -3,7 +3,7 @@ import AggregateRoot from "../../@shared/domain/entity/aggregate-root.interface"
 import Id from "../../@shared/domain/value-object/id.value-object";
 
 type ClientProps = {
-  id?: Id;
+  id: Id;
   name: string;
   email: string;
   address: string;

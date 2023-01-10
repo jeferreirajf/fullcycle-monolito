@@ -1,21 +1,21 @@
 import { BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
-import ClientModel from "./client.model";
+import {InvoiceClientModel} from "./client.model";
 
 @Table({
-    tableName: "address",
+    tableName: "invoice_address",
     timestamps: false,
 })
-export default class AddressModel extends Model {
+export class InvoiceClientAddressModel extends Model {
     @PrimaryKey
     @Column
     declare id: string;
 
-    @ForeignKey(()=>ClientModel)
+    @ForeignKey(()=>InvoiceClientModel)
     @Column({allowNull: false})
     declare client_id: string;
 
-    @BelongsTo(()=>ClientModel)
-    declare client: ClientModel;
+    @BelongsTo(()=>InvoiceClientModel)
+    declare client: InvoiceClientModel;
 
     @Column({allowNull: false})
     street: string;

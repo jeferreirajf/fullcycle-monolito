@@ -5,9 +5,9 @@ import Client from "../domain/value-objects/client.invoice.value-object";
 import InvoiceItem from "../domain/value-objects/item.invoice.value-object";
 import { InvoiceModel } from "./invoice.model";
 import InvoiceRepository from "./invoice.repository";
-import AddressModel from "./value-object/address.model";
-import ClientModel from "./value-object/client.model";
-import InvoiceItemModel from "./value-object/invoice-item.model";
+import {InvoiceClientAddressModel} from "./value-object/address.model";
+import {InvoiceClientModel} from "./value-object/client.model";
+import {InvoiceItemModel} from "./value-object/invoice-item.model";
 
 describe("Invoice repository unit test", () => {
 
@@ -21,7 +21,7 @@ describe("Invoice repository unit test", () => {
             sync: { force: true }
         });
 
-        sequelize.addModels([AddressModel, ClientModel, InvoiceItemModel, InvoiceModel]);
+        sequelize.addModels([InvoiceClientAddressModel, InvoiceClientModel, InvoiceItemModel, InvoiceModel]);
         await sequelize.sync();
     })
 
@@ -89,8 +89,8 @@ describe("Invoice repository unit test", () => {
             {
                 include: [
                     {
-                        model: ClientModel,
-                        include: [{ model: AddressModel }]
+                        model: InvoiceClientModel,
+                        include: [{ model: InvoiceClientAddressModel }]
                     },
                     {
                         model: InvoiceItemModel
@@ -125,7 +125,7 @@ describe("Invoice repository unit test", () => {
             {
                 include: [
                     {model: InvoiceItemModel}, 
-                    {model: ClientModel, include: [AddressModel]}
+                    {model: InvoiceClientModel, include: [InvoiceClientAddressModel]}
                 ]
             });
 

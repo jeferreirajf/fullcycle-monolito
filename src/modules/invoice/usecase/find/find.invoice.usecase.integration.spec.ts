@@ -5,30 +5,30 @@ import Client from "../../domain/value-objects/client.invoice.value-object";
 import InvoiceItem from "../../domain/value-objects/item.invoice.value-object";
 import { InvoiceModel } from "../../repository/invoice.model";
 import InvoiceRepository from "../../repository/invoice.repository";
-import AddressModel from "../../repository/value-object/address.model";
-import ClientModel from "../../repository/value-object/client.model";
-import InvoiceItemModel from "../../repository/value-object/invoice-item.model";
+import { InvoiceClientAddressModel } from "../../repository/value-object/address.model";
+import { InvoiceClientModel } from "../../repository/value-object/client.model";
+import { InvoiceItemModel } from "../../repository/value-object/invoice-item.model";
 import FindInvoiceUseCase from "./find.invoice.usecase";
-import {FindInvoiceUseCaseInputDTO} from "./find.invoice.usecase.dto";
+import { FindInvoiceUseCaseInputDTO } from "./find.invoice.usecase.dto";
 
 
-describe("Find invoice usecase integration test", ()=>{
+describe("Find invoice usecase integration test", () => {
 
-    let sequelize : Sequelize;
+    let sequelize: Sequelize;
 
-    beforeEach(async ()=>{
+    beforeEach(async () => {
         sequelize = new Sequelize({
             dialect: "sqlite",
             logging: false,
             storage: ":memory:",
-            sync: {force: true}
+            sync: { force: true }
         });
 
-        sequelize.addModels([InvoiceItemModel, AddressModel, ClientModel, InvoiceModel]);
+        sequelize.addModels([InvoiceItemModel, InvoiceClientAddressModel, InvoiceClientModel, InvoiceModel]);
         await sequelize.sync();
     });
 
-    afterEach(async ()=>{
+    afterEach(async () => {
         await sequelize.close();
     });
 
@@ -92,8 +92,8 @@ describe("Find invoice usecase integration test", ()=>{
             {
                 include: [
                     {
-                        model: ClientModel,
-                        include: [{ model: AddressModel }]
+                        model: InvoiceClientModel,
+                        include: [{ model: InvoiceClientAddressModel }]
                     },
                     {
                         model: InvoiceItemModel
@@ -101,7 +101,7 @@ describe("Find invoice usecase integration test", ()=>{
             });
     }
 
-    it("should find an invoice", async ()=>{
+    it("should find an invoice", async () => {
         const invoiceRepository = new InvoiceRepository();
         const invoiceFindUseCase = new FindInvoiceUseCase(invoiceRepository);
 

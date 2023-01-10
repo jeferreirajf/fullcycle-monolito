@@ -1,7 +1,7 @@
 import { Column, Model, PrimaryKey, Table } from "sequelize-typescript";
 
 @Table({
-  tableName: "clients",
+  tableName: "adm_clients",
   timestamps: false,
 })
 export class ClientModel extends Model {
