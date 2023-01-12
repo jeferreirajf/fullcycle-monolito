@@ -25,10 +25,14 @@ Neste subdesafio, uma **API Rest** foi desenvolvida utilizando **express** e **N
 
 Após clonar este repositório, digite o seguinte comando para instalar as dependências:
 
-```npm install```
+```
+npm install
+```
 
 Depois, para rodar todos os testes, basta digitar:
 
-```npm test```
+```
+npm test
+```
 
 <sup>OBS: Para rodar o programa é necessário a instalação do Node e do NPM.</sup>
