@@ -6,7 +6,7 @@ export const checkoutRouter = express.Router();
 checkoutRouter.post("/", async (req: Request, res: Response, next: NextFunction) =>{
     try{
         const checkoutFacade = CheckoutFacadeFactory.create();
-        const result = checkoutFacade.placeOrder({
+        const result = await checkoutFacade.placeOrder({
             clientId: req.body.clientId,
             products: req.body.products
         });
@@ -14,26 +14,6 @@ checkoutRouter.post("/", async (req: Request, res: Response, next: NextFunction)
         res.status(200).send(result);
     }
     catch(error){
-        // res.status(500).send(error);
         next(error);
-    }
-});
-
-checkoutRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>{
-    try{
-        const checkoutFacade = CheckoutFacadeFactory.create();
-        const result = checkoutFacade.placeOrder({
-            clientId: "client1",
-            products: [
-                {productId: "idp1"},
-                {productId: "idp2"}
-            ]
-        });
-
-        res.status(200).send(result);
-    }
-    catch(error){
-        // res.status(500).send(error);
-        next(new Error(error.toString()));
     }
 });

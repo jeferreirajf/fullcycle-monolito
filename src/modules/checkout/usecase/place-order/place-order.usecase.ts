@@ -3,6 +3,7 @@ import UseCaseInterface from "../../../@shared/usecase/use-case.interface";
 import ClientAdmFacadeInterface from "../../../client-adm/facade/client-adm.facade.interface";
 import ProductAdmFacadeInterface from "../../../product-adm/facade/product-adm.facade.interface";
 import StoreCatalogFacade from "../../../store-catalog/facade/store-catalog.facade";
+import StoreCatalogFacadeInterface from "../../../store-catalog/facade/store-catalog.facade.interface";
 import Client from "../../domain/client.entity";
 import Order from "../../domain/order.entity";
 import Product from "../../domain/product.entity";
@@ -12,7 +13,7 @@ import { PlaceOrderInputDto, PlaceOrderOutputDto } from "./place-order.dto";
 export default class PlaceOrderUseCase implements UseCaseInterface {
   private _clientFacade: ClientAdmFacadeInterface;
   private _productFacade: ProductAdmFacadeInterface;
-  private _catalogFacade: StoreCatalogFacade;
+  private _catalogFacade: StoreCatalogFacadeInterface;
   private _repository: CheckoutGateway;
 
   constructor(
@@ -36,8 +37,8 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
     await this.validateProducts(input);
 
     const products = await Promise.all(
-      input.products.map((p) => {
-        return this.getProduct(p.productId);
+      input.products.map(async (p) => {
+        return await this.getProduct(p.productId);
       })
     );
 
@@ -52,7 +53,7 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
       client: myClient,
       products: products,
     });
-    this._repository.addOrder(order);
+    await this._repository.addOrder(order);
 
     return {
       id: order.id.id,

@@ -23,23 +23,3 @@ clientRouter.post("/", async (req: Request, res: Response, next: NextFunction)=>
         next(error);
     }
 });
-
-clientRouter.get("/", async (req: Request, res: Response, next: NextFunction)=>{
-    const clientService = ClientAdmFacadeFactory.create();
-
-    try{
-        const input: AddClientFacadeInputDto = {
-            name: "Client 1",
-            address: "Address 1",
-            email: "Email@email.com",
-        }
-
-        await clientService.add(input);
-
-        res.status(200).send({"message": "Client added sucessfully"});
-    }
-    catch(error){
-        console.log(error);
-        next(error);
-    }
-});

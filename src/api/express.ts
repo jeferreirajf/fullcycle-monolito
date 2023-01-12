@@ -13,6 +13,7 @@ import { AdmProductModel } from "../modules/product-adm/repository/product.model
 import { CatalogProductModel } from "../modules/store-catalog/repository/product.model";
 import { checkoutRouter } from "./routes/checkout/checkout.route";
 import { clientRouter } from "./routes/client/client.route";
+import { invoiceRouter } from "./routes/invoice/invoice.route";
 import { productRouter } from "./routes/product/product.route";
 
 export const app: Express = express();
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use("/products", productRouter);
 app.use("/clients", clientRouter);
 app.use("/checkout", checkoutRouter);
+app.use("/invoice", invoiceRouter);
 
 export let sequelize: Sequelize;
 

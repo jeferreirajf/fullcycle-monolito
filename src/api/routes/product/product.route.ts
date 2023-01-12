@@ -24,24 +24,3 @@ productRouter.post("/", async (req: Request, res: Response, next: NextFunction) 
         next(error);
     }
 });
-
-productRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
-    const productAdmFacade = ProductAdmFacadeFactory.create();
-
-    try{
-        const productInsertAdmData: AddProductFacadeInputDto = {
-            name: "req.body.name",
-            description: "req.body.description",
-            purchasePrice: 100,
-            stock: 10,
-        }
-
-        await productAdmFacade.addProduct(productInsertAdmData);
-
-        res.status(200).send({"message": "Product added successfully"});
-    }
-    catch(error){
-        console.log(error);
-        next(error);
-    }
-});
